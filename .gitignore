@@ -1,3 +1,8 @@
+.env*
+.env
+.env.text
+
+
 # Created by https://www.toptal.com/developers/gitignore/api/jupyternotebooks,python,visualstudiocode,linux,windows,osx
 # Edit at https://www.toptal.com/developers/gitignore?templates=jupyternotebooks,python,visualstudiocode,linux,windows,osx
 
