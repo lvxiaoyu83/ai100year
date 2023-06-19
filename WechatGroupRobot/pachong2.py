@@ -33,7 +33,7 @@ def get_wechat_artile_content(vgm_url):
 	
 	share_desc = soup.find(property='og:description') #分享描述行
 	share_desc_con = share_desc.get('content') #分享描述文本
-	# print(share_desc_con)
+	# print(share_desc_con.strip())
 	
 	share_img = soup.find(property='og:image') #分享头图行
 	share_img_con = share_img.get('content') #分享头图地址，微信有防盗链机制，所以图片需要下载到本地
@@ -48,10 +48,10 @@ def get_wechat_artile_content(vgm_url):
 	# 		img['data-src'] = new_src   #前端图片展示时需要用延迟加载
 	# 		print(img)
 			
-	name = soup.select('#meta_content > span.rich_media_meta_text')
-	if len(name) > 0:
-		author_name = name[0].get_text() #作者名字
-		print(author_name)
+	# name = soup.select('#meta_content > span.rich_media_meta_text')
+	# if len(name) > 0:
+	# 	author_name = name[0].get_text() #作者名字
+	# 	print(author_name)
 
 	title = body.find(id='activity-name') #标题(带html标签的内容)
 	title_txt = title.get_text() #标题的文本
@@ -71,9 +71,14 @@ def get_wechat_artile_content(vgm_url):
 	wx_account_account = wx_account_content[0].select('.profile_meta_value')[0].get_text() #公众号微信名
 	wx_account_desc = wx_account_content[1].select('.profile_meta_value')[0].get_text() #公众号描述
 
-	# print(wx_account_name)
+	publish_time = soup.select('#meta_content > #publish_time')[0].get_text() #微信公众号的名字
+	# publish_time = soup.find(id="publish_time")
+	# print(publish_time)
+	
+
+	# print(wx_account_name.strip())
 	# print(wx_account_account)
 	# print(wx_account_desc)
-	return content_text
+	return wx_account_name.strip(), title_txt.strip(), share_desc_con.strip(), content_text
 
-# get_wechat_artile_content('https://mp.weixin.qq.com/s/tztm1ic7B7z4klXBzGv6vg')
+# print(get_wechat_artile_content('https://mp.weixin.qq.com/s/IZL4-lE9jjd5-3ahzWHCog'))
