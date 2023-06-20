@@ -1,5 +1,6 @@
-# wechat*
+_wechat*
 images*
+WechatGroupRobot/images*
 .idea*
 __pycache__
 .env*
@@ -283,3 +284,5 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/jupyternotebooks,python,visualstudiocode,linux,windows,osx
+WechatGroupRobot/images/my1.png
+WechatGroupRobot/images/my2.png

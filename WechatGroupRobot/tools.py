@@ -8,12 +8,11 @@ def img_loc(img):
     return myv
 
 def moveby(mv, x, y):
-    # if mv is None or mv.status is False:
-    #     return
     pag.moveTo(x=mv.x+x,y=mv.y+y)
+    time.sleep(0.3)
 
 def open_curr_article():
-    my2v=img_loc("images/my2.png")
+    my2v=img_loc("images2/my2.png")
     moveby(my2v, 60, 60)
     pag.click()
     moveby(my2v, 70, 150)
@@ -21,18 +20,18 @@ def open_curr_article():
     
 
 def move_to_first():
-    my1v=img_loc("images/my1.png")
+    my1v=img_loc("images2/my1.png")
     moveby(my1v, -450, 60)
     pag.click()
 
 def click_article():
-    my1v=img_loc("images/my1.png")
+    my1v=img_loc("images2/my1.png")
     moveby(my1v, -450, 60)
     pag.click()
     clp.set_clipboard()
 
 def open_dingyuehao_1():
-    serch_plus = img_loc("images/serch_plus.png")
+    serch_plus = img_loc("images2/serch_plus.png")
     moveby(serch_plus, -40, 15)
     pag.click()
     
@@ -42,17 +41,17 @@ def open_dingyuehao_1():
     time.sleep(0.1)
     pag.hotkey('ctrl', 'v')
 
-    serch_plus = img_loc("images/serch_plus.png")
+    serch_plus = img_loc("images2/serch_plus.png")
     moveby(serch_plus, -90, 90)
     pag.click()
 
 def open_dingyuehao_2():
-    dingyuehao_switch = img_loc("images/dingyuehao_switch.png")
+    dingyuehao_switch = img_loc("images2/dingyuehao_switch.png")
     if dingyuehao_switch.status is True:
         moveby(dingyuehao_switch, 5, 5)
         pag.click()
     
-    ding_switch2 = img_loc("images/ding_switch2.png")
+    ding_switch2 = img_loc("images2/ding_switch2.png")
     moveby(ding_switch2, 1, 1)
     pag.click()
 
@@ -62,14 +61,14 @@ def now_str():
     return time_str
 
 def move_to_first():
-    my1v=img_loc("images/my1.png")
+    my1v=img_loc("images2/my1.png")
     moveby(my1v, -450, 60)
     pag.scroll(1000000)
     time.sleep(0.1)
     pag.click()
 
 def open_curr_article_to_browser():
-    my2v=img_loc("images/my2.png")
+    my2v=img_loc("images2/my2.png")
     moveby(my2v, 60, 60)
     pag.click()
     moveby(my2v, 70, 150)
@@ -81,18 +80,18 @@ def check_list(foo, foo_list):
             return True
         
 def copy_browser_url():
-    time.sleep(0.8)
+    time.sleep(1.2)
 
     pag.hotkey('ctrl', 'l') 
     pag.hotkey('ctrl', 'c') 
     url = clp.paste()
 #     print("get url: " + url)
-    time.sleep(0.8)
+    time.sleep(1.4)
     pag.hotkey('ctrl', 'w') 
     return url
 
 def click_curr_hao_all_article(num):
-    my1v=img_loc("images/my1.png")
+    my1v=img_loc("images2/my1.png")
     url_list = []
     for i in range(num):
         moveby(my1v, -180, 220+i*100)
@@ -107,13 +106,15 @@ def click_curr_hao_all_article(num):
 def wechat_article_list(hao_num, art_num):
     url_list = []
     for i in range(hao_num + 1):
-        my1v=img_loc("images/my1.png")
-        moveby(my1v, -450, 70)
+        my1v=img_loc("images2/my1.png")
+        
         if i == 0:
+            moveby(my1v, -450, 70)
+            pag.click()
             pag.scroll(1000000)
             pag.click()
         elif i <= 10:
-            moveby(my1v, -450, 70*i)
+            moveby(my1v, -450, 70+70*i)
             pag.click()
         else:
             moveby(my1v, -450, 770)
@@ -124,8 +125,6 @@ def wechat_article_list(hao_num, art_num):
         if ulist:
             url_list.extend(ulist)
         ulist = list(set(ulist))
-        # print(url_list)
-        print("sleeping...")
         time.sleep(1.3)        
     url_list = list(set(url_list))
     

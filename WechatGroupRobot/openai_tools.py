@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv, find_dotenv
 _ = load_dotenv(find_dotenv()) # read local .env file
 openai.api_key  = os.getenv('OPENAI_API_KEY')
-# openai.api_base = "https://api.openai-proxy.com/v1"
+openai.api_base = "https://api.openai-proxy.com/v1"
 print(openai.api_key)
 print(openai.api_base)
 
@@ -16,7 +16,7 @@ def resetapi():
     print(response.id," : ",response.choices[0].message.content)
 
 def call_with_sys(sys_content, user_content_text):
-  print(openai.api_base)
+  # print(openai.api_base)
   msg = [  
           {'role':'system', 'content': sys_content},
           {'role':'user', 'content': sys_content + "\n\n\n" +user_content_text}  ]
@@ -25,7 +25,7 @@ def call_with_sys(sys_content, user_content_text):
       temperature=1, max_tokens=2048,
       frequency_penalty=1, presence_penalty=1,
   )
-  print(response.id,":\n",response.choices[0].message.content)
+  # print(response.id,":\n",response.choices[0].message.content)
   return response.id, response.choices[0].message.content
 
 def call_completion(user_content_text):
