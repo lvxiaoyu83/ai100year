@@ -15,14 +15,14 @@ def resetapi():
     )
     print(response.id," : ",response.choices[0].message.content)
 
-def call_with_sys(sys_content, user_content_text):
+def call_with_sys(sys_content, user_content_text, max_tokens=2048):
   # print(openai.api_base)
   msg = [  
           {'role':'system', 'content': sys_content},
           {'role':'user', 'content': sys_content + "\n\n\n" +user_content_text}  ]
   response = openai.ChatCompletion.create(
       model="gpt-3.5-turbo-16k", messages=msg,
-      temperature=1, max_tokens=2048,
+      temperature=1, max_tokens=max_tokens,
       frequency_penalty=1, presence_penalty=1,
   )
   # print(response.id,":\n",response.choices[0].message.content)

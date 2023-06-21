@@ -8,8 +8,9 @@ def img_loc(img):
     return myv
 
 def moveby(mv, x, y):
+    time.sleep(0.8)
     pag.moveTo(x=mv.x+x,y=mv.y+y)
-    time.sleep(0.3)
+    time.sleep(0.8)
 
 def open_curr_article():
     my2v=img_loc("images2/my2.png")
