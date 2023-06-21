@@ -13,7 +13,7 @@ def moveby(mv, x, y):
     time.sleep(0.8)
 
 def open_curr_article():
-    my2v=img_loc("images2/my2.png")
+    my2v=find_my2()
     moveby(my2v, 60, 60)
     pag.click()
     moveby(my2v, 70, 150)
@@ -31,8 +31,17 @@ def click_article():
     pag.click()
     clp.set_clipboard()
 
+def find_search_plus():
+    search_plus = img_loc("images2/search_plus.png")
+    if search_plus.status is False:
+        search_plus = img_loc("images2/serch_plus_2.png")
+        return search_plus
+    else:
+        return search_plus
+
 def open_dingyuehao_1():
     serch_plus = img_loc("images2/serch_plus.png")
+    
     moveby(serch_plus, -40, 15)
     pag.click()
     
@@ -68,11 +77,19 @@ def move_to_first():
     time.sleep(0.1)
     pag.click()
 
+def find_my2():
+    my2v=img_loc("images2/my2_2.png")
+    return my2v
+
+h_3point_right = 70
+v_3point_down = 60
+v_3point_down_down = v_3point_down + 120
+
 def open_curr_article_to_browser():
-    my2v=img_loc("images2/my2.png")
-    moveby(my2v, 60, 60)
+    my2v=find_my2()
+    moveby(my2v, h_3point_right, v_3point_down)
     pag.click()
-    moveby(my2v, 70, 150)
+    moveby(my2v, h_3point_right+10, v_3point_down_down)
     pag.click()
 
 def check_list(foo, foo_list):
@@ -86,7 +103,7 @@ def copy_browser_url():
     pag.hotkey('ctrl', 'l') 
     pag.hotkey('ctrl', 'c') 
     url = clp.paste()
-#     print("get url: " + url)
+    print("get url: " + url)
     time.sleep(1.4)
     pag.hotkey('ctrl', 'w') 
     return url
