@@ -55,6 +55,7 @@ def copy_browser_url():
 def click_curr_hao_all_article(num):
     my1v=find_my1()
     i = 0
+    curr_hao = None
     while True:
         if i >= num:
             break
@@ -64,41 +65,36 @@ def click_curr_hao_all_article(num):
         open_curr_article_to_browser()
         url = copy_browser_url()
         if url not in all_ctt:
-            success = fetch_url_ctt(url)
-            if success:
-                i += 1
-                time.sleep(15)
-                continue
+            hao, title, desc, abst, ctt = fetch_url_ctt(url)
+            all_ctt[url] = title
+
+            if curr_hao is None:
+                curr_hao = hao
+                f_meta.write("## %s \n\n" % hao)
+                f_meta.flush()
             else:
-                time.sleep(1.5)
-                continue
+                f_meta.write("### %s \n\n %s\n\n %s\n" % (title, abst, url))
+                f_meta.flush()
+            f_meta.flush()
+            
+            f_ctt.write("%s : %s : %s: %s\n\n" % (hao, title, desc, url))
+            f_ctt.write("%s\n\n" % abst)
+            f_ctt.write("%s\n\n\n\n\n\n" % ctt)
+            f_ctt.flush()
+            time.sleep(15)
         else:
             i += 1
             continue
+    if curr_hao is not None:
+        f_meta.write("<hr/>\n\n\n\n\n\n")
+        f_meta.flush()
 
 def fetch_url_ctt(url):
-    # try:
     hao, title, desc, ctt = get_wechat_artile_content(url)
-    _, abst = call_with_sys(sys_prompt, ctt[:6000], 1024)
-    time.sleep(1.2)
-    all_ctt[url] = {
-                'hao' : hao,
-                'title' : title,
-                'ctt' : ctt,
-                'abst' : abst,
-            }
-    f_meta.write("### %s || %s \n\n %s\n\n %s\n<hr/>\n\n\n\n\n" % (hao, title, abst, url))
-    f_meta.flush()
-    
-    f_ctt.write("%s : %s : %s: %s\n\n" % (hao, title, desc, url))
-    f_ctt.write("%s\n\n" % abst)
-    f_ctt.write("%s\n\n\n\n\n\n" % ctt)
-    f_ctt.flush()
+    _, abst = call_with_sys(sys_prompt, ctt[:6500], 512)
     print("%s : %s : %s" % (hao, title, url))
-    # except:
-    #     print('error!')
-    #     return False
-    return True
+    return hao, title, desc, abst, ctt   
+
 
 def wechat_article_list(hao_num, art_num):
     for i in range(hao_num + 1):
