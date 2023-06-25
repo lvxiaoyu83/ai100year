@@ -53,9 +53,9 @@ class SqliteDb:
 
 
 def test():
-    db = SqliteDb('test.db')
-    db.create_table('article1', 'hao TEXT, title TEXT, url TEXT, desc TEXT, abst TEXT, ctt TEXT')
-    db.close()
+    # db = SqliteDb('test.db')
+    # db.create_table('article1', 'hao TEXT, title TEXT, url TEXT, desc TEXT, abst TEXT, ctt TEXT')
+    # db.close()
 
 
     db = SqliteDb('test.db')
@@ -67,5 +67,9 @@ def test():
     #     'abst': 'xxx',
     #     'ctt': 'xxx'
     # })
-    print(db.read('article1'))
+    print(db.read('article1', columns=' hao, title, desc, abst, ctt ', where="url='xxx'"))
     print(db.check_url('xxx'))
+    db.close()
+
+if __name__ == "__main__":
+    test()
