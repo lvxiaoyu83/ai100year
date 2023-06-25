@@ -40,6 +40,9 @@ def get_wechat_artile_content(vgm_url):
 
 	h1 = soup.find_all('h1')
 	body = soup.find(id='activity-detail')
+
+	if not body:
+		return None, None, None, None
 	content=body.find(id='js_content')
 	imgs = content.find_all('img')  #文章中的所有图片
 	# for img in imgs:

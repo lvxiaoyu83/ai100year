@@ -16,7 +16,7 @@ def resetapi():
     print(response.id," : ",response.choices[0].message.content)
 
 def call_with_sys(sys_content, user_content_text, max_tokens=2048):
-  # print(openai.api_base)
+  print(openai.api_base)
   msg = [  
           {'role':'system', 'content': sys_content},
           {'role':'user', 'content': sys_content + "\n\n\n" +user_content_text}  ]
