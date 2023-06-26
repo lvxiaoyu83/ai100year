@@ -7,11 +7,11 @@ from db import SqliteDb
 
 
 
-hao_width = 256
-hao_height = 88
-top_height = 40
-window_width = 1500
-wi1ndow_height = 1000
+hao_width = 258
+hao_height = 90
+top_height = 38
+window_width = 1920
+wi1ndow_height = 1080
 
 def img_loc(img):
     my=CardLocation(config=CardConfig(template_file=img, bias_type=BiasType.NoBias))
@@ -63,19 +63,19 @@ def close_dingyuehao():
     pag.hotkey('alt', 'f4')
 
 def locate_first():
-    my1v = find_my1()
-    pag.click()
-    moveby(my1v, 44, top_height + hao_height / 2)
+    # my1v = find_my1()
+    # pag.click()
+    pag.moveTo(x = hao_height / 2, y = top_height + hao_height / 2)
+    # moveby(my1v, 44, top_height + hao_height / 2)
     pag.click()
     time.sleep(0.3)
     pag.scroll(100000000)
     pag.click()
 
 def open_curr_article_to_browser():
-    my1v=find_my1()
-    moveby(my1v, window_width - 10, top_height + 40)
+    pag.moveTo(x = window_width-36, y = top_height + 30)
     pag.click()
-    moveby(my1v, window_width - 0, top_height + 160)
+    pag.moveTo(x = window_width-48, y = top_height + 150)
     pag.click()
 
 
@@ -90,10 +90,10 @@ def copy_browser_url():
     return url
 
 def click_curr_hao_all_article(num):
-    my1v=find_my1()
+    # my1v=find_my1()
     i = 0
 
-    moveby(my1v, 290, 220 + i * 100)
+    pag.moveTo(x = 290, y = 220)
     pag.click()
     time.sleep(1.3)
     open_curr_article_to_browser()
@@ -109,7 +109,7 @@ def click_curr_hao_all_article(num):
     while True:
         if i >= num:
             break
-        moveby(my1v, 290, 220 + i * 120)
+        pag.moveTo(x = 290, y = 220 + i * 120)
         pag.click()
         time.sleep(1.3)
         open_curr_article_to_browser()
@@ -178,10 +178,11 @@ def wechat_article_list(hao_num, art_num):
             locate_first()
             pag.click()
         elif 0 < i <= 10:
-            moveby(my1v, 44, top_height + hao_height / 2 + i * 88)
+            pag.moveTo(x = hao_height / 2, y = top_height + hao_height / 2 + hao_height * i)
+            # moveby(my1v, 44, top_height + hao_height / 2 + i * 88)
             pag.click()
         else:
-            moveby(my1v, 44, top_height + hao_height / 2 + 10 *88)
+            pag.moveTo(x = hao_height / 2, y = top_height + hao_height / 2 + hao_height * 10)
             pag.click()
             pag.hotkey('down')#不点击左边列表 只key down不行
 
@@ -204,7 +205,7 @@ if __name__ == "__main__":
         now = datetime.now().strftime('%Y%m%d_%H%M%S')
         f_meta = open("C:\\Users\\Administrator\\OneDrive\\model_daily\\_wechat_url" + "_" + now + ".md", "w", encoding="utf-8")
         f_ctt = open("_wechat_content" + "_" + now + ".txt", "w", encoding="utf-8")
-        wechat_article_list(6, 1)
+        wechat_article_list(69, 1)
         f_meta.close()
         f_ctt.close()
         db.close()
