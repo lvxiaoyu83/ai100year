@@ -46,5 +46,13 @@ def add_url():
         })
     return {}
 
+@app.route("/articles", methods=['POST'])
+def articles():
+    url = request.json.get("url")
+    res = {}
+    if url == 'xxx':
+        res['data'] = db.read('article')
+    return res
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=port)
