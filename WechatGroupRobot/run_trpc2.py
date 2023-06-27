@@ -87,7 +87,7 @@ def open_curr_article_to_browser():
     pag.click()
 
 def article_click(j):
-    y = 200 + j * article_2rd_height
+    y = 280 + j * article_2rd_height
     if y >= window_height - 50:
         print('y is too big, return')
         return
@@ -119,24 +119,28 @@ def wechat_article_list(hao_num, art_num):
         elif 1 <= i <= one_page_hao_num:
             locate_hao(i)
         else:
-            locate_hao(one_page_hao_num)
-            time.sleep(0.5)
+            locate_hao(one_page_hao_num-1)
+            time.sleep(0.4)
             pag.click()
+            time.sleep(0.5)
+            locate_hao(one_page_hao_num)
+            pag.click()
+            time.sleep(0.5)
             pag.hotkey('down')
         time.sleep(0.3)
-        # click_curr_hao_all_article(art_num)
+        click_curr_hao_all_article(art_num)
 
 if __name__ == "__main__":
     # re_open_dingyuehao()
     # locate_hao()
-    wechat_article_list(60, 1)
+    # wechat_article_list(69, 1)
     # time.sleep(1.3)
     # locate_hao(one_page_hao_num)
     # pag.hotkey('down')
     # click_curr_hao_all_article(6)
     # article_click(6)
-    # while True:
-    #     re_open_dingyuehao()
-    #     wechat_article_list(20, 5)
-    #     print('sleeping...')
-    #     time.sleep(5 * 60)
+    while True:
+        re_open_dingyuehao()
+        wechat_article_list(69, 6)
+        print('sleeping...')
+        time.sleep(5 * 60)
