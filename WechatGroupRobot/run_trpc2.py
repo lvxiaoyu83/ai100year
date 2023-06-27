@@ -1,5 +1,6 @@
 from app import *
 import pyperclip as clp
+from daily_client import add_url_to_server
 
 window_width = 1920
 window_height = 1080
@@ -106,6 +107,7 @@ def click_curr_hao_all_article(num):
             if url not in all_ctt:
                 print(url)
                 all_ctt[url] = url
+                add_url_to_server(url)
         else:
             break
 
