@@ -4,7 +4,10 @@ from dotenv import load_dotenv, find_dotenv
 _ = load_dotenv(find_dotenv()) # read local .env file
 api_key  = os.getenv('DKEY')
 
-server_url = "http://47.74.43.230:3389/add_url"
+server  = os.getenv('SERVER')
+port  = os.getenv('PORT')
+
+server_url = f"http://{server}:{port}/add_url"
 headers = {"Authorization": api_key}
 
 

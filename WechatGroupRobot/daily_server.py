@@ -5,7 +5,8 @@ from dotenv import load_dotenv, find_dotenv
 from db import SqliteDb
 _ = load_dotenv(find_dotenv()) # read local .env file
 api_key  = os.getenv('DKEY')
-
+server  = os.getenv('SERVER')
+port  = os.getenv('PORT')
 db = SqliteDb('test.sqlite')
 db.create_table('article', 'hao TEXT, title TEXT, url TEXT, desc TEXT, abst TEXT, ctt TEXT')
 
@@ -46,4 +47,4 @@ def add_url():
     return {}
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port='3389')
+    app.run(host=server, port=port)
