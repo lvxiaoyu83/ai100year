@@ -20,8 +20,9 @@ def post_request(url, data):
 
 def add_url_to_server(url):
     try:
-        print(post_request(server_url, {"url": url}))
+        if url.startswith("https://"):
+            print(post_request(server_url, {"url": url}))
     except:
         pass
 
-add_url_to_server('https://mp.weixin.qq.com/s/7eah_qMhol4EBwrz1bzxeA')
+# add_url_to_server('https://mp.weixin.qq.com/s/7eah_qMhol4EBwrz1bzxeA')
