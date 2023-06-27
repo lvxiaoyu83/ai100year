@@ -25,5 +25,6 @@ def add_url_to_server(url):
     except:
         pass
 
-# add_url_to_server('https://mp.weixin.qq.com/s/7eah_qMhol4EBwrz1bzxeA')
-print(post_request(f"http://{server}:{port}/articles", {"url": 'xxx'}))
+if __name__ == "__main__":
+    # add_url_to_server('https://mp.weixin.qq.com/s/7eah_qMhol4EBwrz1bzxeA')
+    print(post_request(f"http://{server}:{port}/articles", {"url": 'xxx'}))
