@@ -6,6 +6,9 @@ from db import SqliteDb
 _ = load_dotenv(find_dotenv()) # read local .env file
 api_key  = os.getenv('DKEY')
 
+db = SqliteDb('test.sqlite')
+db.create_table('article', 'hao TEXT, title TEXT, url TEXT, desc TEXT, abst TEXT, ctt TEXT')
+
 app = Flask(__name__)
 
 @app.before_request
@@ -43,6 +46,4 @@ def add_url():
     return {}
 
 if __name__ == "__main__":
-    db = SqliteDb('test.sqlite')
-    db.create_table('article', 'hao TEXT, title TEXT, url TEXT, desc TEXT, abst TEXT, ctt TEXT')
-    app.run()
+    app.run(host='0.0.0.0', post='3389')
