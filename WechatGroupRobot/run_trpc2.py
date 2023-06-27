@@ -1,214 +1,140 @@
 from app import *
-from openai_tools import *
-from pachong2 import *
 import pyperclip as clp
-from db import SqliteDb
 
-
-
-
-hao_width = 258
-hao_height = 90
-top_height = 38
 window_width = 1920
-wi1ndow_height = 1080
+window_height = 1080
 
-def img_loc(img):
-    my=CardLocation(config=CardConfig(template_file=img, bias_type=BiasType.NoBias))
-    myv=my.get_location
-    return myv
+top_banner_height = 36
 
-def find_my1():
-    my1v = img_loc("images2/my1.png")
-    return my1v
+hao_height = 90
+hao_width = 260
 
-def moveby(mv, x, y):
-    time.sleep(0.4)
-    pag.moveTo(x=mv.x+x,y=mv.y+y)
-    time.sleep(0.3)
+one_page_hao_num = 10
+
+article_2rd_width = 260
+article_2rd_height = 122
+
+h_sou = 120
+v_sou = 44
+
+h_ding = 108
+v_ding = 142
+
+h_ding2 = 110
+v_ding2 = 110
+
+h_r_top = 40
+v_r_top = 70
+
+r_menu_item_height = 34 # 点开右上方三个点、出来的菜单、单项的高度
+
+all_ctt = {}
 
 def re_open_dingyuehao():
+    # pag.hotkey('ctrl','alt', 'w')
+    # time.sleep(0.3)
+    # pag.hotkey('esc')
+    # time.sleep(0.3)
+    # pag.hotkey('esc')
+    # time.sleep(0.3)
+    # pag.hotkey('esc')
+    # time.sleep(0.3)
     pag.hotkey('ctrl','alt', 'w')
-    time.sleep(0.2)
-    pag.hotkey('esc')
-    time.sleep(0.2)
-    pag.hotkey('esc')
-    time.sleep(0.2)
-    pag.hotkey('esc')
-    time.sleep(0.2)
-    pag.hotkey('ctrl','alt', 'w')
-    mpls = img_loc("images2/main_plus.png")
-    moveby(mpls, -60, 16)
+    pag.hotkey('win', 'up')
+    pag.moveTo(x = h_sou, y = v_sou)
     pag.click()
     clp.copy("订阅号")
-    time.sleep(0.2)
+    time.sleep(0.3)
     pag.hotkey('ctrl', 'a')
-    time.sleep(0.2)
+    time.sleep(0.3)
     pag.hotkey('ctrl', 'v')
-    moveby(mpls, -60, 100)
-    pag.click()
-    moveby(mpls, -60, 100)
-    pag.click(clicks=2, interval=0.1, button='right')
-    moveby(mpls, 0, 0)
-    pag.click(clicks=2, interval=0.1, button='right')#最大化
-    mpls = find_my1()
-    moveby(mpls, 2, 2)
-
-def close_dingyuehao():
-    my1v = find_my1()
-    moveby(my1v, 2, 2)
-    pag.click()
-    pag.hotkey('alt', 'f4')
-
-def locate_first():
-    # my1v = find_my1()
-    # pag.click()
-    pag.moveTo(x = hao_height / 2, y = top_height + hao_height / 2)
-    # moveby(my1v, 44, top_height + hao_height / 2)
+    pag.moveTo(x = h_ding, y = v_ding)
+    time.sleep(0.3)
     pag.click()
     time.sleep(0.3)
-    pag.scroll(100000000)
-    pag.click()
+    pag.moveTo(x = h_ding2, y = v_ding2)
+    time.sleep(0.3)
+    pag.click(clicks=2, interval=0.1, button='right')
+    time.sleep(0.3)
+    pag.moveTo(x = window_width /2 , y = window_height / 2)
+    time.sleep(0.3)
+    pag.hotkey('win', 'up')
 
-def open_curr_article_to_browser():
-    pag.moveTo(x = window_width-36, y = top_height + 30)
+def locate_hao(i=0):
+    foobar = hao_height / 2
+    time.sleep(0.3)
+    pag.moveTo(x = foobar, y = top_banner_height + hao_height*0.8+ i*hao_height)
+    if i == 0:
+        pag.scroll(10000000)
+    time.sleep(0.3)
     pag.click()
-    pag.moveTo(x = window_width-48, y = top_height + 150)
-    pag.click()
-
 
 def copy_browser_url():
-    time.sleep(1.4)
-    pag.hotkey('ctrl', 'l') 
+    time.sleep(1.2)
+    pag.hotkey('ctrl', 'l')
+    time.sleep(0.3)
     pag.hotkey('ctrl', 'c') 
     url = clp.paste()
-    print("get url: " + url)
-    time.sleep(0.6)
+    time.sleep(0.4)
     pag.hotkey('ctrl', 'w') 
     return url
 
-def click_curr_hao_all_article(num):
-    # my1v=find_my1()
-    i = 0
+def open_curr_article_to_browser():
+    pag.moveTo(x = window_width - h_r_top, y = v_r_top)
+    pag.click()
+    pag.moveTo(x = window_width - h_r_top - 10, y =v_r_top+r_menu_item_height *3.5)
+    pag.click()
 
-    pag.moveTo(x = 290, y = 220)
+def article_click(j):
+    y = 200 + j * article_2rd_height
+    if y >= window_height - 50:
+        print('y is too big, return')
+        return
+    pag.moveTo(x=hao_width + top_banner_height, y=y)
+    time.sleep(0.3)
     pag.click()
     time.sleep(1.3)
-    open_curr_article_to_browser()
-    url = copy_browser_url()
-    if url in all_ctt:
-        return 
-
-    hao, title, desc, ctt = get_wechat_artile_content(url)
-    if hao is not None:
-        f_meta.write("## %s \n\n" % hao)
-        f_meta.flush()
-
+ 
+def click_curr_hao_all_article(num):
+    j = -1
     while True:
-        if i >= num:
-            break
-        pag.moveTo(x = 290, y = 220 + i * 120)
-        pag.click()
-        time.sleep(1.3)
-        open_curr_article_to_browser()
-        url = copy_browser_url()
-        if url in all_ctt:
-            i += 1
-            continue
-
-        all_ctt[url] = title
-
-        if db.check_url(url):
-            i += 1
-            hao, title, desc, abst, ctt = db.read('article', columns=' hao, title, desc, abst, ctt ', where=f"url='{url}'")[0]
+        j += 1
+        if j < num:
+            article_click(j)
+            open_curr_article_to_browser()
+            url = copy_browser_url()
+            if url not in all_ctt:
+                print(url)
+                all_ctt[url] = url
         else:
-            hao, title, desc, abst, ctt = fetch_url_ctt(url)
-            if hao is None:
-                i += 1
-                continue
-            db.create('article', {
-                'title': title,
-                'hao': hao,
-                'url': url,
-                'desc': desc,
-                'abst': abst,
-                'ctt': ctt
-            })
-
-        f_meta.write("### %s \n\n %s\n\n %s\n" % (title, abst, url))
-        f_meta.flush()
-        
-        f_ctt.write("%s : %s \n %s\n%s\n\n" % (hao, title, desc, url))
-        f_ctt.write("%s\n\n" % abst)
-        f_ctt.write("%s\n\n\n\n\n\n" % ctt)
-        f_ctt.flush()
-        i += 1
-        
-
-    if hao is not None:
-        f_meta.write("<hr/>\n\n\n\n\n\n")
-        f_meta.flush()
-
-def fetch_url_ctt(url):
-    hao, title, desc, ctt = get_wechat_artile_content(url)
-    if hao is None:
-        return None, None, None, None, None
-    if ctt:
-        try:
-            _, abst = call_with_sys(sys_prompt, ctt[:6500], 512)
-            time.sleep(20)
-        except openai.error.APIError:
-            return None, None, None, None, None
-    else:
-        _, abst = '', ''
-    print("%s : %s : %s" % (hao, title, url))
-    return hao, title, desc, abst, ctt   
-
+            break
 
 def wechat_article_list(hao_num, art_num):
-    my1v=find_my1()
-    moveby(my1v, 0, 0)
-    pag.click()
-
-    for i in range(hao_num):
-        my1v=find_my1()
+    for i in range(hao_num + 1):
+        print(f"------------ {i} -----------")
         if i == 0:
-            locate_first()
-            pag.click()
-        elif 0 < i <= 10:
-            pag.moveTo(x = hao_height / 2, y = top_height + hao_height / 2 + hao_height * i)
-            # moveby(my1v, 44, top_height + hao_height / 2 + i * 88)
-            pag.click()
+            locate_hao()
+        elif 1 <= i <= one_page_hao_num:
+            locate_hao(i)
         else:
-            pag.moveTo(x = hao_height / 2, y = top_height + hao_height / 2 + hao_height * 10)
+            locate_hao(one_page_hao_num)
+            time.sleep(0.5)
             pag.click()
-            pag.hotkey('down')#不点击左边列表 只key down不行
-
-        time.sleep(0.8)
-        click_curr_hao_all_article(art_num)
+            pag.hotkey('down')
+        time.sleep(0.3)
+        # click_curr_hao_all_article(art_num)
 
 if __name__ == "__main__":
-    
-    while True:
-        try:
-            close_dingyuehao()
-        except:
-            pass
-        re_open_dingyuehao()
-        # break
-        all_ctt = {}
-        sys_prompt = "跟据用户给出的文章提取80-120字的摘要，具体时间、人物等信息不可以省略。"
-        db = SqliteDb('test.sqlite')
-        db.create_table('article', 'hao TEXT, title TEXT, url TEXT, desc TEXT, abst TEXT, ctt TEXT')
-        now = datetime.now().strftime('%Y%m%d_%H%M%S')
-        f_meta = open("C:\\Users\\Administrator\\OneDrive\\model_daily\\_wechat_url" + "_" + now + ".md", "w", encoding="utf-8")
-        f_ctt = open("_wechat_content" + "_" + now + ".txt", "w", encoding="utf-8")
-        wechat_article_list(69, 1)
-        f_meta.close()
-        f_ctt.close()
-        db.close()
-
-        time.sleep(2 * 60)
-
-
-        
+    # re_open_dingyuehao()
+    # locate_hao()
+    wechat_article_list(60, 1)
+    # time.sleep(1.3)
+    # locate_hao(one_page_hao_num)
+    # pag.hotkey('down')
+    # click_curr_hao_all_article(6)
+    # article_click(6)
+    # while True:
+    #     re_open_dingyuehao()
+    #     wechat_article_list(20, 5)
+    #     print('sleeping...')
+    #     time.sleep(5 * 60)
