@@ -23,3 +23,5 @@ def add_url_to_server(url):
         print(post_request(server_url, {"url": url}))
     except:
         pass
+
+add_url_to_server('https://mp.weixin.qq.com/s/7eah_qMhol4EBwrz1bzxeA')
