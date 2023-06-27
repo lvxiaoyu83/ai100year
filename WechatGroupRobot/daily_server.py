@@ -2,7 +2,7 @@ import os
 from flask import Flask, request
 from dotenv import load_dotenv, find_dotenv
 
-from WechatGroupRobot.db import SqliteDb
+from db import SqliteDb
 _ = load_dotenv(find_dotenv()) # read local .env file
 api_key  = os.getenv('DKEY')
 
