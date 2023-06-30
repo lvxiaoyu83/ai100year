@@ -1,14 +1,14 @@
 import os
 from flask import Flask, request
 from dotenv import load_dotenv, find_dotenv
+from pachong2 import get_wechat_artile_content
 
-from db import SqliteDb
+from db import get_database
 _ = load_dotenv(find_dotenv()) # read local .env file
 api_key  = os.getenv('DKEY')
 server  = os.getenv('SERVER')
 port  = os.getenv('PORT')
-db = SqliteDb('test.sqlite')
-db.create_table('article', 'hao TEXT, title TEXT, url TEXT, desc TEXT, abst TEXT, ctt TEXT')
+db = get_database()
 
 app = Flask(__name__)
 
@@ -36,14 +36,17 @@ def add_url():
     url = request.json.get("url")
     if not db.check_url(url):
         print(url)
-        db.create('article', {
-            'title': '',
-            'hao': '',
-            'url': url,
-            'desc': '',
-            'abst': '',
-            'ctt': ''
-        })
+        hao, title, desc, ctt = get_wechat_artile_content(url)
+        if hao:
+            db.create('article', {
+                'title': title,
+                'hao': hao,
+                'url': url,
+                'desc': desc,
+                'abst': '',
+                'ctt': ctt
+            })
+            return {'title': title}
     return {}
 
 @app.route("/articles", methods=['POST'])

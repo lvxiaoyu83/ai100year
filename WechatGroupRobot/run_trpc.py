@@ -2,9 +2,7 @@ from app import *
 from openai_tools import *
 from pachong2 import *
 import pyperclip as clp
-from db import SqliteDb
-
-
+from db import get_database
 
 
 hao_width = 256
@@ -199,8 +197,7 @@ if __name__ == "__main__":
         # break
         all_ctt = {}
         sys_prompt = "跟据用户给出的文章提取80-120字的摘要，具体时间、人物等信息不可以省略。"
-        db = SqliteDb('test.sqlite')
-        db.create_table('article', 'hao TEXT, title TEXT, url TEXT, desc TEXT, abst TEXT, ctt TEXT')
+        db = get_database()
         now = datetime.now().strftime('%Y%m%d_%H%M%S')
         f_meta = open("C:\\Users\\Administrator\\OneDrive\\model_daily\\_wechat_url" + "_" + now + ".md", "w", encoding="utf-8")
         f_ctt = open("_wechat_content" + "_" + now + ".txt", "w", encoding="utf-8")
