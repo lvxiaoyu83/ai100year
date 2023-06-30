@@ -21,7 +21,8 @@ def post_request(url, data):
 def add_url_to_server(url):
     try:
         if url.startswith("https://"):
-            print(post_request(server_url, {"url": url}))
+            res = post_request(server_url, {"url": url})
+            print(f'add_url_to_server {res}')
     except:
         pass
 
