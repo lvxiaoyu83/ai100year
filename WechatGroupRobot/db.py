@@ -15,6 +15,9 @@ class SqliteDb:
         self.conn = sqlite3.connect(db_file, check_same_thread=False)
         self.cursor = self.conn.cursor()
 
+    def __del__(self):
+        self.close()
+
     def close(self):
         self.conn.close()
 
