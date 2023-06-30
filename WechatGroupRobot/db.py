@@ -1,4 +1,5 @@
 import sqlite3
+import datetime
 
 class SqliteDb:
     # Private static variable to hold the single instance
@@ -57,6 +58,7 @@ class SqliteDb:
         query = f'SELECT {columns} FROM {table}'
         if where:
             query += f' WHERE {where}'
+        query += f' order by ctime desc '
         self.execute(query, params)
         return self.fetchall()
     
@@ -82,6 +84,8 @@ def test():
             })
     print(db.read('article', columns=' hao, title, desc, abst, ctt, ctime ', where="url='xxx'"))
     print(db.check_url('xxx'))
+    current_date = datetime.date.today().strftime("%Y-%m-%d")
+    print(db.read('article', ' hao, title, ctime ', f"ctime > '{current_date}' "))
     # db.close()
 
 if __name__ == "__main__":

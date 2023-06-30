@@ -1,4 +1,5 @@
 import os
+import datetime
 from flask import Flask, request
 from dotenv import load_dotenv, find_dotenv
 from pachong2 import get_wechat_artile_content
@@ -54,7 +55,8 @@ def articles():
     url = request.json.get("url")
     res = {}
     if url == 'xxx':
-        res['data'] = db.read('article')
+        current_date = datetime.date.today().strftime("%Y-%m-%d")
+        res['data'] = db.read('article', ' hao, title, ctime ', f"ctime > '{current_date}' ")
     return res
 
 if __name__ == "__main__":
