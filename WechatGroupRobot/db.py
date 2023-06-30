@@ -79,7 +79,7 @@ def test():
             })
     print(db.read('article', columns=' hao, title, desc, abst, ctt, ctime ', where="url='xxx'"))
     print(db.check_url('xxx'))
-    db.close()
+    # db.close()
 
 if __name__ == "__main__":
     test()
