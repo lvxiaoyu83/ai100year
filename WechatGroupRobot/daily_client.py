@@ -12,6 +12,7 @@ headers = {"Authorization": api_key}
 
 
 def post_request(url, data):
+    print(url)
     response = requests.post(url, json=data, headers=headers)
     if response.status_code == 200:
         return response.json()

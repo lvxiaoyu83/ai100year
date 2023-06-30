@@ -52,11 +52,10 @@ def add_url():
 
 @app.route("/articles", methods=['POST'])
 def articles():
-    url = request.json.get("url")
     res = {}
-    if url == 'xxx':
-        current_date = datetime.date.today().strftime("%Y-%m-%d")
-        res['data'] = db.read('article', ' hao, title, ctime ', f"ctime > '{current_date}' ")
+    current_date = datetime.date.today().strftime("%Y-%m-%d")
+    rows = db.read('article', ' hao, title, abst, url ', f"ctime > '{current_date}' ")
+    res['data'] = "\n\n\n\n\n ".join(["### %s | %s \n\n %s\n\n %s\n " % (r[0], r[1], r[2], r[3]) for r in rows])
     return res
 
 if __name__ == "__main__":
