@@ -27,7 +27,7 @@ class SqliteDb:
     def __init__(self, db_file):
         self.conn = sqlite3.connect(db_file, check_same_thread=False)
         self.cursor = self.conn.cursor()
-        self.cache = RedisCache
+        self.cache = RedisCache()
 
     def __del__(self):
         self.close()
