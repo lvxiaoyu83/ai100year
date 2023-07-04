@@ -65,7 +65,7 @@ def daily():
             rr = db.article(r[0])  # hao, title, abst, url, ctt
             if len(rr) > 0:
                 art_list.append(rr)
-    md = "\n\n\n\n\n ".join(["### %s | %s \n\n %s\n\n %s\n " % (r[0], r[1], r[2], r[3]) for r in art_list])
+    md = "\n\n\n\n\n ".join(["### %s | %s \n\n %s\n\n %s\n\n " % (r[0], r[1], r[2], r[3]) for r in art_list])
     html = markdown.markdown(md)
     return html
 
@@ -74,16 +74,17 @@ def articles():
     res = {}
     current_date = datetime.date.today().strftime("%Y-%m-%d")
     rows = db.read('article', ' hao, title, abst, url ', f"ctime > '{current_date}' ")
-    res['data'] = "\n\n\n\n\n ".join(["### %s | %s \n\n %s\n\n %s\n " % (r[0], r[1], r[2], r[3]) for r in rows])
+    res['data'] = rows
+    # res['data'] = "\n\n\n\n\n ".join(["### %s | %s \n\n %s\n\n %s\n " % (r[0], r[1], r[2], r[3]) for r in rows])
 
-    art_list = []
-    rows = db.read('article', ' url ', f"ctime > '{current_date}' ")
-    for r in rows:
-        if len(r) > 0:
-            rr = db.article(r[0])  # hao, title, abst, url, ctt
-            if len(rr) > 0:
-                art_list.append(rr)
-    md = "\n\n\n\n\n ".join(["### %s | %s \n\n %s\n\n %s\n " % (r[0], r[1], r[2], r[3]) for r in art_list])
+    # art_list = []
+    # rows = db.read('article', ' url ', f"ctime > '{current_date}' ")
+    # for r in rows:
+    #     if len(r) > 0:
+    #         rr = db.article(r[0])  # hao, title, abst, url, ctt
+    #         if len(rr) > 0:
+    #             art_list.append(rr)
+    # md = "\n\n\n\n\n ".join(["### %s | %s \n\n %s\n\n %s\n " % (r[0], r[1], r[2], r[3]) for r in art_list])
     return res
 
 if __name__ == "__main__":
