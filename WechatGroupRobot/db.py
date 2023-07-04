@@ -1,5 +1,17 @@
 import sqlite3
 import datetime
+import redis
+
+class RedisCache:
+    def __init__(self):
+        self.redis_client = redis.Redis(host='localhost', port=6379, db=0)
+
+    def get(self, key):
+        return self.redis_client.get(key)
+
+    def set(self, key, value):
+        self.redis_client.set(key, value)
+
 
 class SqliteDb:
     # Private static variable to hold the single instance
@@ -15,6 +27,7 @@ class SqliteDb:
     def __init__(self, db_file):
         self.conn = sqlite3.connect(db_file, check_same_thread=False)
         self.cursor = self.conn.cursor()
+        self.cache = RedisCache
 
     def __del__(self):
         self.close()
@@ -27,6 +40,20 @@ class SqliteDb:
             self.cursor.execute(query, params)
         else:
             self.cursor.execute(query)
+
+    def article(self, url):
+        cache_key = url
+        cached_result = self.cache.get(cache_key)
+        if cached_result:
+            return cached_result
+        else:
+            result = self.read('article', ' hao, title, abst, ctt ', f"url = '{url}' ")
+            if len(result) > 0:
+                result = result[0]
+            else:
+                return []
+            self.cache.set(cache_key, result)
+            return result
 
     def fetchone(self):
         return self.cursor.fetchone()
