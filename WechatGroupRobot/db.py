@@ -48,7 +48,7 @@ class SqliteDb:
         if cached_result:
             return pickle.loads(cached_result)
         else:
-            result = self.read('article', ' hao, title, abst, ctt ', f"url = '{url}' ")
+            result = self.read('article', ' hao, title, abst, url, ctt ', f"url = '{url}' ")
             if len(result) > 0:
                 result = result[0]
             else:
