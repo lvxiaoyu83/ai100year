@@ -1,6 +1,7 @@
 import sqlite3
 import datetime
 import redis
+import pickle
 
 class RedisCache:
     def __init__(self):
@@ -45,14 +46,14 @@ class SqliteDb:
         cache_key = url
         cached_result = self.cache.get(cache_key)
         if cached_result:
-            return cached_result
+            return pickle.loads(cached_result)
         else:
             result = self.read('article', ' hao, title, abst, ctt ', f"url = '{url}' ")
             if len(result) > 0:
                 result = result[0]
             else:
-                return []
-            self.cache.set(cache_key, result)
+                return ()
+            self.cache.set(cache_key, pickle.dumps(result))
             return result
 
     def fetchone(self):
