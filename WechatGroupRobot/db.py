@@ -43,10 +43,11 @@ class SqliteDb:
             self.cursor.execute(query)
 
     def article(self, url):
+        # return self.read('article', ' hao, title, abst, url, ctt ', f"url = '{url}' ")
         cache_key = url
         cached_result = self.cache.get(cache_key)
         if cached_result:
-            return pickle.loads(cached_result)
+            return [pickle.loads(cached_result)]
         else:
             result = self.read('article', ' hao, title, abst, url, ctt ', f"url = '{url}' ")
             if len(result) > 0:

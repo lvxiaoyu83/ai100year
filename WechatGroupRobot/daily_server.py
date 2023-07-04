@@ -1,6 +1,6 @@
 import os
 import datetime
-import markdown
+from markdown2 import Markdown
 from flask import Flask, request
 from dotenv import load_dotenv, find_dotenv
 from pachong2 import get_wechat_artile_content
@@ -11,6 +11,7 @@ api_key  = os.getenv('DKEY')
 server  = os.getenv('SERVER')
 port  = os.getenv('PORT')
 db = get_database()
+markdowner = Markdown()
 
 app = Flask(__name__)
 
@@ -59,14 +60,16 @@ def add_url():
 def daily():
     current_date = datetime.date.today().strftime("%Y-%m-%d")
     art_list = []
-    rows = db.read('article', ' url ', f"ctime > '{current_date}' ")
+    rows = db.read('article', ' url ', f"ctime >= '{current_date}' ")
     for r in rows:
         if len(r) > 0:
             rr = db.article(r[0])  # hao, title, abst, url, ctt
             if len(rr) > 0:
-                art_list.append(rr)
-    md = "\n\n\n\n\n ".join(["### %s | %s \n\n %s\n\n %s\n\n " % (r[0], r[1], r[2], r[3]) for r in art_list])
-    html = markdown.markdown(md)
+                art_list.append(rr[0])
+    md = "\n\n\n\n\n".join([f"#### {a[0]} | {a[1]} \n\n{a[2]} \n\n[{a[3]}]({a[3]}) \n\n\n\n " for a in art_list])
+    
+    html = markdowner.convert(md)
+    md = f'<html> <body> ' + md + f' </body> </html>'
     return html
 
 @app.route("/articles", methods=['POST'])
