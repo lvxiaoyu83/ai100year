@@ -21,7 +21,7 @@ class SqliteDb:
     @staticmethod
     def get_instance():
         if SqliteDb.__instance is None:
-            SqliteDb.__instance = SqliteDb('test1.sqlite')
+            SqliteDb.__instance = SqliteDb('test.sqlite')
         SqliteDb.__instance.create_table('article', 'hao TEXT, title TEXT, url TEXT, desc TEXT, abst TEXT, ctt TEXT, ctime TEXT DEFAULT CURRENT_TIMESTAMP ')
         SqliteDb.__instance.create_table('article_index', 'hao_index TEXT, article_index TEXT, url TEXT, ctime TEXT DEFAULT CURRENT_TIMESTAMP ')
         return SqliteDb.__instance
@@ -110,6 +110,10 @@ def get_database():
     return SqliteDb.get_instance()
 
 db = get_database()
+
+def fetch(sql):
+    db.execute(sql)
+    return db.fetchall()
 
 def test():
     url = 'xxx'

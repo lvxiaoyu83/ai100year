@@ -4,13 +4,12 @@ from markdown2 import Markdown
 from flask import Flask, request
 from dotenv import load_dotenv, find_dotenv
 from pachong2 import get_wechat_artile_content
+from db import db, fetch
 
-from db import get_database
 _ = load_dotenv(find_dotenv()) # read local .env file
 api_key  = os.getenv('DKEY')
 server  = os.getenv('SERVER')
 port  = os.getenv('PORT')
-db = get_database()
 markdowner = Markdown()
 
 app = Flask(__name__)
@@ -37,6 +36,24 @@ def check_key():
 @app.route("/")
 def hello_world():
     return "no"
+
+def article_content(url):
+    hao, title, desc, ctt = None, None, None, None
+    if not db.check_url(url):
+        print(f"fetch from web: {url}")
+        hao, title, desc, ctt = get_wechat_artile_content(url)
+        if hao:
+            db.create('article', {
+                'title': title,
+                'hao': hao,
+                'url': url,
+                'desc': desc,
+                'abst': '',
+                'ctt': ctt
+            })
+    else:
+        hao, title, desc, ctt = db.read('article', ' hao,title,desc,ctt ', f"url='{url}' ")[0]
+    return hao, title, desc, ctt
 
 @app.route("/add_url", methods=['POST'])
 def add_url():
@@ -85,6 +102,20 @@ def daily():
                 art_list.append(rr[0])
     md = "\n\n\n\n\n".join([f"#### {a[0]} | {a[1]} \n\n{a[2]} \n\n[{a[3]}]({a[3]}) \n\n\n\n " for a in art_list])
     
+    html = markdowner.convert(md)
+    md = f'<html> <body> ' + md + f' </body> </html>'
+    return html
+
+@app.route("/daily2", methods=['GET'])
+def daily2():
+    art_list = []
+    current_date = datetime.date.today().strftime("%Y-%m-%d")
+    for r in fetch("select url from article_index where ctime>='{current_date}' order by hao_index, article_index;"):
+        url = r[0]
+        hao, title, desc, ctt = article_content(url)
+        if hao:
+            art_list.append([hao, title, desc, ctt])
+    md = "\n\n\n\n\n".join([f"#### {a[0]} | {a[1]} \n\n{a[2]} \n\n[{a[3]}]({a[3]}) \n\n\n\n " for a in art_list])
     html = markdowner.convert(md)
     md = f'<html> <body> ' + md + f' </body> </html>'
     return html
