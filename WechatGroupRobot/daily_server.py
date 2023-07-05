@@ -110,7 +110,7 @@ def daily():
 def daily2():
     md = ''
     current_date = datetime.date.today().strftime("%Y-%m-%d")
-    for h in fetch(f"select hao_index from article_index where ctime>='{current_date}' order by hao_index;"):
+    for h in fetch(f"select distinct hao_index from article_index where ctime>='{current_date}' order by hao_index;"):
         art_list = []
         hao_str = ''
         for r in fetch(f"select url from article_index where ctime>='{current_date}' and hao_index='{h[0]}' order by article_index;"):
