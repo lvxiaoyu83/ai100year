@@ -110,11 +110,11 @@ def daily():
 def daily2():
     art_list = []
     current_date = datetime.date.today().strftime("%Y-%m-%d")
-    for r in fetch("select url from article_index where ctime>='{current_date}' order by hao_index, article_index;"):
+    for r in fetch(f"select url from article_index where ctime>='{current_date}' order by hao_index, article_index;"):
         url = r[0]
-        hao, title, desc, ctt = article_content(url)
+        hao, title, desc, ctt = article_content(url) # todo ctt to abst
         if hao:
-            art_list.append([hao, title, desc, ctt])
+            art_list.append([hao, title, desc, url])
     md = "\n\n\n\n\n".join([f"#### {a[0]} | {a[1]} \n\n{a[2]} \n\n[{a[3]}]({a[3]}) \n\n\n\n " for a in art_list])
     html = markdowner.convert(md)
     md = f'<html> <body> ' + md + f' </body> </html>'

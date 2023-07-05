@@ -29,6 +29,6 @@ def add_url_to_server(url, hao_index, article_index):
 if __name__ == "__main__":
     add_url_to_server("https://mp.weixin.qq.com/s/UbkKk-0DfPtxNjuBixqDNQ", '0', '0')
 
-    print(post_request(f"http://{server}:{port}/daily2", {}))
-    res = requests.get(f"http://{server}:{port}/daily2", headers=headers)
-    print(res)
+    print(post_request(f"http://{server}:{port}/articles", {}))
+    # res = requests.get(f"http://{server}:{port}/daily2", headers=headers)
+    # print(res.)
