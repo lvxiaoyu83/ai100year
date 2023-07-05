@@ -42,7 +42,7 @@ def hello_world():
 def add_url():
     url = request.json.get("url")
     if not db.check_url(url):
-        print(url)
+        print(f"fetch from web: {url}")
         hao, title, desc, ctt = get_wechat_artile_content(url)
         if hao:
             db.create('article', {
@@ -53,8 +53,14 @@ def add_url():
                 'abst': '',
                 'ctt': ctt
             })
-            return {'title': title}
-    return {}
+        else:
+            return {} # 数据库里也没有，网络获取也不成功
+    else:
+        hao, title, desc, ctt = db.read('article', ' hao,title,desc,ctt ', f"url='{url}' ")[0]
+    
+    hao_index = request.json.get("hao_index")
+    art_index = request.json.get("art_index")
+    return {'title': title}
 
 @app.route("/daily", methods=['GET'])
 def daily():

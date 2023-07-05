@@ -28,12 +28,6 @@ def add_url_to_server(url):
         pass
 
 if __name__ == "__main__":
-    # add_url_to_server('https://mp.weixin.qq.com/s/7eah_qMhol4EBwrz1bzxeA')
-    add_url_to_server("https://mp.weixin.qq.com/s/Eub2A4J_namWhxjh9GaNaA")
-    add_url_to_server("https://mp.weixin.qq.com/s/pe5kvT-vsZ6wH-BwLxrEnA")
-    add_url_to_server("https://mp.weixin.qq.com/s/TZQZ9uR260fvHvbHdHEm2A")
-    add_url_to_server("https://mp.weixin.qq.com/s/MmpndADkhHd4rSIEffAztQ")
-    add_url_to_server("https://mp.weixin.qq.com/s/VaDX5RmyEeXz2UWVGZePhw")
-    add_url_to_server("https://mp.weixin.qq.com/s/y2352Zfg1mK6IxUjdYEeDA")
+    add_url_to_server("https://mp.weixin.qq.com/s/u7rHYbNmcjjcAxLQEAbnlg")
 
     print(post_request(f"http://{server}:{port}/articles", {"url": 'xxx'}))

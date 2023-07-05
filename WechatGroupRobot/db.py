@@ -23,6 +23,7 @@ class SqliteDb:
         if SqliteDb.__instance is None:
             SqliteDb.__instance = SqliteDb('test1.sqlite')
         SqliteDb.__instance.create_table('article', 'hao TEXT, title TEXT, url TEXT, desc TEXT, abst TEXT, ctt TEXT, ctime TEXT DEFAULT CURRENT_TIMESTAMP ')
+        SqliteDb.__instance.create_table('article_index', 'hao_index TEXT, article_index TEXT, url TEXT, ctime TEXT DEFAULT CURRENT_TIMESTAMP ')
         return SqliteDb.__instance
     
     def __init__(self, db_file):
@@ -36,6 +37,11 @@ class SqliteDb:
     def close(self):
         self.conn.close()
 
+    def create_table(self, table_name, columns):
+        query = f"CREATE TABLE IF NOT EXISTS {table_name} ({columns}, PRIMARY KEY(url))"
+        self.execute(query)
+        self.commit()
+    
     def execute(self, query, params=None):
         if params:
             self.cursor.execute(query, params)
@@ -65,11 +71,6 @@ class SqliteDb:
     
     def commit(self):
         self.conn.commit()
-
-    def create_table(self, table_name, columns):
-        query = f"CREATE TABLE IF NOT EXISTS {table_name} ({columns}, PRIMARY KEY(url))"
-        self.execute(query)
-        self.commit()
 
     def create(self, table, data):
         columns = ', '.join(data.keys())
@@ -101,20 +102,29 @@ class SqliteDb:
 def get_database():
     return SqliteDb.get_instance()
 
+db = get_database()
+
 def test():
+    url = 'xxx'
     db = get_database()
     db.create('article', {
                 'title': 'title',
                 'hao': 'hao',
-                'url': 'xxx',
+                'url': f'{url}',
                 'desc': 'desc',
                 'abst': '',
                 'ctt': 'ctt'
             })
-    print(db.read('article', columns=' hao, title, desc, abst, ctt, ctime ', where="url='xxx'"))
-    print(db.check_url('xxx'))
+    print(db.read('article', columns=' hao, title, desc, abst, ctt, ctime ', where=f"url='{url}'"))
+    print(db.check_url(url))
+    db.create('article_index', {
+                'article_index': '0',
+                'hao_index': '0',
+                'url': url
+            })
     current_date = datetime.date.today().strftime("%Y-%m-%d")
     print(db.read('article', ' hao, title, ctime ', f"ctime > '{current_date}' "))
+    print(db.read('article_index', ' hao_index,article_index,url,ctime ', f"url='{url}' "))
     # db.close()
 
 if __name__ == "__main__":
