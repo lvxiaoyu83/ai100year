@@ -19,15 +19,15 @@ def post_request(url, data):
     else:
         raise Exception("API request failed")
 
-def add_url_to_server(url):
+def add_url_to_server(url, hao_index, article_index):
     try:
         if url.startswith("https://"):
-            res = post_request(server_url, {"url": url})
+            res = post_request(server_url, {"url": url, "hao_index": hao_index, "article_index": article_index})
             print(f'add_url_to_server {res}')
     except:
         pass
 
 if __name__ == "__main__":
-    add_url_to_server("https://mp.weixin.qq.com/s/u7rHYbNmcjjcAxLQEAbnlg")
+    add_url_to_server("https://mp.weixin.qq.com/s/u7rHYbNmcjjcAxLQEAbnlg", '1', '2')
 
     print(post_request(f"http://{server}:{port}/articles", {"url": 'xxx'}))

@@ -59,7 +59,18 @@ def add_url():
         hao, title, desc, ctt = db.read('article', ' hao,title,desc,ctt ', f"url='{url}' ")[0]
     
     hao_index = request.json.get("hao_index")
-    art_index = request.json.get("art_index")
+    article_index = request.json.get("article_index")
+    if hao_index is not None and article_index is not None:
+        if not db.check_url_index(url):
+            db.create('article_index', {
+                'article_index': article_index,
+                'hao_index': hao_index,
+                'url': url
+            })
+        else:
+            query = f"UPDATE article_index SET article_index = {article_index}, hao_index = {hao_index} WHERE url = '{url}'"
+            db.execute(query)
+            db.commit()
     return {'title': title}
 
 @app.route("/daily", methods=['GET'])

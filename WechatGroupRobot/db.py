@@ -98,6 +98,13 @@ class SqliteDb:
         self.execute(query)
         result = self.fetchone()
         return result is not None
+    
+    def check_url_index(self, url_to_check):
+        # url_to_check = 'https://example.com/article1'
+        query = f"SELECT * FROM article_index WHERE url = '{url_to_check}'"
+        self.execute(query)
+        result = self.fetchone()
+        return result is not None
 
 def get_database():
     return SqliteDb.get_instance()
