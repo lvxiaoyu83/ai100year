@@ -113,7 +113,7 @@ def daily2():
     for h in fetch(f"select hao_index from article_index where ctime>='{current_date}' order by hao_index;"):
         art_list = []
         hao_str = ''
-        for r in fetch(f"select article_index from article_index where ctime>='{current_date}' and hao_index='{h[0]}' order by article_index;"):
+        for r in fetch(f"select url from article_index where ctime>='{current_date}' and hao_index='{h[0]}' order by article_index;"):
             url = r[0]
             hao, title, desc, ctt = article_content(url) # todo ctt to abst
             if hao:
