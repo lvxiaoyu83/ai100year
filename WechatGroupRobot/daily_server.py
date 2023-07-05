@@ -108,14 +108,21 @@ def daily():
 
 @app.route("/daily2", methods=['GET'])
 def daily2():
-    art_list = []
+    md = ''
     current_date = datetime.date.today().strftime("%Y-%m-%d")
-    for r in fetch(f"select url from article_index where ctime>='{current_date}' order by hao_index, article_index;"):
-        url = r[0]
-        hao, title, desc, ctt = article_content(url) # todo ctt to abst
-        if hao:
-            art_list.append([hao, title, desc, url])
-    md = "\n\n\n\n\n".join([f"#### {a[0]} | {a[1]} \n\n{a[2]} \n\n[{a[3]}]({a[3]}) \n\n\n\n " for a in art_list])
+    for h in fetch(f"select hao_index from article_index where ctime>='{current_date}' order by hao_index;"):
+        art_list = []
+        hao_str = ''
+        for r in fetch(f"select article_index from article_index where ctime>='{current_date}' and hao_index='{h[0]}' order by article_index;"):
+            url = r[0]
+            hao, title, desc, ctt = article_content(url) # todo ctt to abst
+            if hao:
+                art_list.append([hao, title, desc, url])
+                if not hao_str:
+                    hao_str = hao
+        md += f"### {hao}"
+        md += "\n\n\n\n\n".join([f"#### {a[1]} \n\n{a[2]} \n\n[{a[3]}]({a[3]}) \n\n\n\n " for a in art_list])
+        md += "\n\n\n\n\n"
     html = markdowner.convert(md)
     md = f'<html> <body> ' + md + f' </body> </html>'
     return html
