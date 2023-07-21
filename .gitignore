@@ -1,3 +1,5 @@
+notebooks/gpt2_data/*
+notebooks/cache_data*
 test.db
 *.sqlite
 _wechat*
