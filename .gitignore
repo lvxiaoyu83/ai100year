@@ -1,3 +1,4 @@
+checkpoint-*
 notebooks/gpt2_data/*
 notebooks/cache_data*
 test.db
